@@ -1,19 +1,19 @@
 import { fetchResult } from "./fetchResult";
 import Notiflix from 'notiflix';
+import SimpleLightbox from "simplelightbox";
+import "simplelightbox/dist/simple-lightbox.min.css";
 
-// Объект с ссылками на элементы интерфейса
+
 const refs = {
     searchForm: document.querySelector(".search-form"),
     loadMoreButton: document.querySelector(".load-more"),
     gallery: document.querySelector(".gallery"),
 };
+const lightbox = new SimpleLightbox('.gallery a');
 
-// Текущая страница для запросов
 let currentPage = 1;
 
-// Добавляем слушатель на событие отправки формы
 refs.searchForm.addEventListener("submit", handleSubmit);
-// Добавляем слушатель на событие клика по кнопке "Load More"
 refs.loadMoreButton.addEventListener("click", handleLoadMore);
 
 // Функция обработки отправки формы
@@ -29,9 +29,8 @@ function handleSubmit(event) {
     // Вызываем функцию fetchResult для загрузки изображений
     fetchResult(searchQuery, currentPage)
         .then(images => {
-            // Проверяем, есть ли изображения
+            
             if (images.length === 0) {
-                // Если нет, скрываем кнопку "Load More" и выводим уведомление
                 showLoadMoreButton(false);
                 Notiflix.Notify.info("We're sorry. No more images to load.");
             } else {
@@ -47,7 +46,7 @@ function handleSubmit(event) {
 
 // Функция обработки клика по кнопке "Load More"
 function handleLoadMore() {
-    // Увеличиваем номер текущей страницы
+    
     currentPage += 1;
 
     const searchQuery = refs.searchForm.elements.searchQuery.value.trim();
@@ -55,13 +54,11 @@ function handleLoadMore() {
     // Вызываем функцию fetchResult для загрузки следующей порции изображений
     fetchResult(searchQuery, currentPage)
         .then(images => {
-            // Проверяем, есть ли изображения
+            
             if (images.length === 0) {
-                // Если нет, скрываем кнопку "Load More" и выводим уведомление
                 showLoadMoreButton(false);
                 Notiflix.Notify.info("We're sorry. No more images to load.");
             } else {
-                // Если есть, рендерим изображения и отображаем/скрываем кнопку "Load More" в зависимости от количества изображений
                 renderImages(images);
                 showLoadMoreButton(images.length <= 40);
             }
@@ -74,12 +71,13 @@ function handleLoadMore() {
 
 // Функция рендеринга изображений в галерее
 function renderImages(images) {
-    refs.gallery.innerHTML = ""; // Очищаем галерею перед добавлением новых изображений
+    refs.gallery.innerHTML = ""; 
 
     images.forEach(image => {
         const { webformatURL, largeImageURL, tags, likes, views, comments, downloads } = image;
 
-        const photoCard = document.createElement("div");
+        const photoCard = document.createElement("a"); 
+        photoCard.href = largeImageURL;
         photoCard.classList.add("photo-card");
 
         const imageElement = document.createElement("img");
@@ -100,6 +98,9 @@ function renderImages(images) {
         photoCard.append(imageElement, infoContainer);
         refs.gallery.appendChild(photoCard);
     });
+
+    
+    lightbox.refresh();
 }
 
 // Функция создания информационного элемента

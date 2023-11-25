@@ -13,7 +13,7 @@ const refs = {
 const lightbox = new SimpleLightbox('.gallery a');
 let currentPage = 1;
 let searchQuery = "";
-let totalImagesCount = 0;
+let ttotalHits = 0;
 
 refs.searchForm.addEventListener("submit", handleSubmit);
 refs.loadMoreButton.addEventListener("click", handleLoadMore);
@@ -57,10 +57,10 @@ function performSearch() {
         });
 }
 // Функция отображения/скрытия кнопки "Load More"
-function showLoadMoreButton(totalImagesCount, per_page) {
+function showLoadMoreButton(totalHits, per_page) {
     const loadMoreButton = refs.loadMoreButton;
 
-    if (totalImagesCount < currentPage * per_page) {
+    if (totalHits < currentPage * per_page) {
         loadMoreButton.style.display = 'block';
     } else {
         loadMoreButton.style.display = 'none';

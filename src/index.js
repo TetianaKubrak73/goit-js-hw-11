@@ -21,13 +21,17 @@ refs.loadMoreButton.addEventListener("click", handleLoadMore);
 function handleSubmit(event) {
     event.preventDefault();
     searchQuery = event.currentTarget.elements.searchQuery.value.trim();
+    
     // Notiflix.Notify.success(`Hooray! We found ${totalImages} images.`);
         if (searchQuery === "") {
-        Notiflix.Notify.failure('Please enter a search query');
-        return;
-    }
+            Notiflix.Notify.failure('Please enter a search query');
+            
+            return;
+                }
     performSearch(searchQuery, currentPage);
-    
+    event.target.reset();
+    refs.gallery.innerHTML = "";
+currentPage = 1; 
 }
 
 function handleLoadMore() {

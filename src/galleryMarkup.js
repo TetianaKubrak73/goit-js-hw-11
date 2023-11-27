@@ -1,5 +1,5 @@
 
-    // Функция рендеринга изображений в галерее
+    
 export function renderImages(images, lightbox, refs) {
     // refs.gallery.innerHTML = "";
 
@@ -20,7 +20,7 @@ export function renderImages(images, lightbox, refs) {
 
     refs.gallery.insertAdjacentHTML("beforeend", imagesMarkup);
 
-    lightbox.refresh(); // Обновляем галерею Lightbox
+    lightbox.refresh(); 
 
 }
     

@@ -1,6 +1,6 @@
 import { fetchResult } from "./fetchResult";
 import { renderImages, createInfoItem } from "./galleryMarkup";
-import Notiflix from 'notiflix';
+import Notiflix, { Notify } from 'notiflix';
 import SimpleLightbox from "simplelightbox";
 import "simplelightbox/dist/simple-lightbox.min.css";
 
@@ -13,7 +13,7 @@ const refs = {
 const lightbox = new SimpleLightbox('.gallery a');
 let currentPage = 1;
 let searchQuery = "";
-let ttotalHits = 0;
+let totalHits = hits.data.totalHits;
 
 refs.searchForm.addEventListener("submit", handleSubmit);
 refs.loadMoreButton.addEventListener("click", handleLoadMore);
@@ -23,11 +23,16 @@ refs.loadMoreButton.addEventListener("click", handleLoadMore);
 function handleSubmit(event) {
     event.preventDefault();
     searchQuery = event.currentTarget.elements.searchQuery.value.trim();
-
+    Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
     if (searchQuery === "") {
         Notiflix.Notify.failure('Please enter a search query');
         return;
+        
     }
+    
+    // Очищаем галерею перед новым запросом
+    refs.gallery.innerHTML = "";
+    currentPage = 1; // Сбрасываем страницу на 1
 
     performSearch();
     
@@ -47,7 +52,7 @@ function performSearch() {
                 Notiflix.Notify.info("Sorry, there are no images matching your search query. Please try again.");
             } else {
                 renderImages(images, lightbox, refs);
-                showLoadMoreButton(images.length <= 40);
+                showLoadMoreButton();
             }
         })
         .catch(error => {

@@ -1,37 +1,28 @@
 
     // Функция рендеринга изображений в галерее
     export function renderImages(images, lightbox, refs) {
-        refs.gallery.innerHTML = "";
+        // refs.gallery.innerHTML = "";
 
-        images.forEach(image => {
-            const { webformatURL, largeImageURL, tags, likes, views, comments, downloads } = image;
+        const imagesMarkup = images.map(image => {
+        const { webformatURL, largeImageURL, tags, likes, views, comments, downloads } = image;
 
-            const photoCard = document.createElement("a");
-            photoCard.href = largeImageURL;
-            photoCard.classList.add("photo-card");
+        return `
+            <a href="${largeImageURL}" class="photo-card">
+                <img src="${webformatURL}" alt="${tags}" loading="lazy">
+                <div class="info">
+                    <p class="info-item"><b>Likes:</b> ${likes}</p>
+                    <p class="info-item"><b>Views:</b> ${views}</p>
+                    <p class="info-item"><b>Comments:</b> ${comments}</p>
+                    <p class="info-item"><b>Downloads:</b> ${downloads}</p>
+                </div>
+            </a>
+        `;
+    }).join("");
 
-            const imageElement = document.createElement("img");
-            imageElement.src = webformatURL;
-            imageElement.alt = tags;
-            imageElement.loading = "lazy";
+    refs.gallery.insertAdjacentHTML("beforeend", imagesMarkup);
 
-            const infoContainer = document.createElement("div");
-            infoContainer.classList.add("info");
-
-            const likesInfo = createInfoItem("Likes", likes);
-            const viewsInfo = createInfoItem("Views", views);
-            const commentsInfo = createInfoItem("Comments", comments);
-            const downloadsInfo = createInfoItem("Downloads", downloads);
-
-            infoContainer.append(likesInfo, viewsInfo, commentsInfo, downloadsInfo);
-
-            photoCard.append(imageElement, infoContainer);
-            refs.gallery.appendChild(photoCard);
-        });
-
-    
-        lightbox.refresh();
-    }
+    lightbox.refresh(); // Обновляем галерею Lightbox
+}
 
     // Функция создания информационного элемента
 

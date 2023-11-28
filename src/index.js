@@ -13,7 +13,7 @@ const refs = {
 const lightbox = new SimpleLightbox('.gallery a');
 let currentPage = 1;
 let searchQuery = "";
-// const totalImages = totalHits;
+const totalHits = "totalHits";
 
 refs.searchForm.addEventListener("submit", handleSubmit);
 refs.loadMoreButton.addEventListener("click", handleLoadMore);
@@ -22,7 +22,7 @@ function handleSubmit(event) {
     event.preventDefault();
     searchQuery = event.currentTarget.elements.searchQuery.value.trim();
     currentPage = 1; 
-    // Notiflix.Notify.success(`Hooray! We found ${totalImages} images.`);
+    Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
         if (searchQuery === "") {
             Notiflix.Notify.failure('Please enter a search query');
             

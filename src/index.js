@@ -21,7 +21,7 @@ refs.loadMoreButton.addEventListener("click", handleLoadMore);
 function handleSubmit(event) {
     event.preventDefault();
     searchQuery = event.currentTarget.elements.searchQuery.value.trim();
-    
+    currentPage = 1; 
     // Notiflix.Notify.success(`Hooray! We found ${totalImages} images.`);
         if (searchQuery === "") {
             Notiflix.Notify.failure('Please enter a search query');
@@ -31,7 +31,7 @@ function handleSubmit(event) {
     performSearch(searchQuery, currentPage);
     event.target.reset();
     refs.gallery.innerHTML = "";
-currentPage = 1; 
+
 }
 
 function handleLoadMore() {

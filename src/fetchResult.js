@@ -15,7 +15,10 @@ export async function fetchResult(pictureName, page) {
     })
     try {
         const response = await axios.get(`${BASE_URL}?${params}`);
-        return response.data.hits; // "hits" содержит массив изображений
+         return {
+            hits: response.data.hits,// "hits" содержит массив изображений
+            totalHits: response.data.totalHits,
+        }; 
     } catch (error) {
         console.error("Error fetching images:", error);
         throw error;

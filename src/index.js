@@ -13,7 +13,7 @@ const refs = {
 const lightbox = new SimpleLightbox('.gallery a');
 let currentPage = 1;
 let searchQuery = "";
-const totalHits = "totalHits";
+
 
 refs.searchForm.addEventListener("submit", handleSubmit);
 refs.loadMoreButton.addEventListener("click", handleLoadMore);
@@ -22,8 +22,7 @@ function handleSubmit(event) {
     event.preventDefault();
     searchQuery = event.currentTarget.elements.searchQuery.value.trim();
     currentPage = 1; 
-    Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
-        if (searchQuery === "") {
+            if (searchQuery === "") {
             Notiflix.Notify.failure('Please enter a search query');
             
             return;
@@ -40,15 +39,16 @@ function handleLoadMore() {
 }
 
 function performSearch(query, page) {
-    fetchResult(query, page)
-        .then(images => {
-            if (images.length === 0) {
+    fetchResult(query, page,)
+        .then(response => {
+    const { hits, totalHits } = response; 
+            if (hits.length === 0) {
                 showLoadMoreButton(false);
                 Notiflix.Notify.info("We're sorry. No more images to load.");
             } else {
-                renderImages(images, lightbox, refs);
-                showLoadMoreButton(images.length <= 40);
-                
+                renderImages(hits, lightbox, refs);
+                showLoadMoreButton(hits.length <= 40);
+                Notiflix.Notify.success(`Hooray! We found ${totalHits} images.`);
             }
         })
         .catch(error => {
